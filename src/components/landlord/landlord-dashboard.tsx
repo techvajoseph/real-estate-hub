@@ -13,7 +13,6 @@ import {
   Building2,
   CalendarDays,
   Check,
-  ChevronDown,
   ChevronRight,
   CircleDollarSign,
   Clock3,
@@ -36,6 +35,7 @@ import {
   X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { AccountMenu, WorkspaceSelector } from "@/components/dashboard/account-menu";
 import { PropertyImage } from "@/components/property-image";
 import { LandlordCalendar } from "./landlord-calendar";
 import { LandlordDialog, type LandlordModal } from "./landlord-dialog";
@@ -159,11 +159,6 @@ export function LandlordDashboard({
       document.removeEventListener("keydown", onKey);
     };
   }, [mobileOpen]);
-  const initials = data.name
-    .split(" ")
-    .map((part) => part[0])
-    .slice(0, 2)
-    .join("");
   const canWrite = data.ready && data.rentalReady;
   function navigate(next: View) {
     setView(next);
@@ -717,28 +712,11 @@ export function LandlordDashboard({
           </span>
           <span className="brand-caption">REAL ESTATE</span>
         </Link>
-        <div className="workspace-selector">
-          <span className="workspace-icon">
-            <KeyRound size={21} />
-          </span>
-          <div>
-            <strong>My workspace</strong>
-            <label>
-              <span className="sr-only">Workspace role</span>
-              <select
-                aria-label="Workspace role"
-                value="landlord"
-                disabled={pending}
-                onChange={(e) => changeRole(e.target.value as WorkspaceRole)}
-              >
-                <option value="buyer">Buyer workspace</option>
-                <option value="seller">Seller workspace</option>
-                <option value="landlord">Landlord workspace</option>
-              </select>
-            </label>
-          </div>
-          <ChevronDown size={14} />
-        </div>
+        <WorkspaceSelector
+          role={"landlord"}
+          pending={pending}
+          onSwitch={changeRole}
+        />
         <p className="nav-caption">RENTAL PORTFOLIO</p>
         <nav>
           {sidebarNav.map((item) => (
@@ -787,13 +765,6 @@ export function LandlordDashboard({
               Add property <ArrowUpRight size={15} />
             </button>
           </div>
-          <div className="sidebar-profile">
-            <span className="dash-avatar">{initials}</span>
-            <div>
-              <strong>{data.name}</strong>
-              <span>Landlord account</span>
-            </div>
-          </div>
         </div>
       </aside>
       <div className="dash-main">
@@ -833,9 +804,14 @@ export function LandlordDashboard({
                 {!!alertCount && <i />}
               </button>
             </div>
-            <span className="dash-avatar" aria-hidden="true">
-              {initials}
-            </span>
+            <AccountMenu
+              name={data.name}
+              email={data.email}
+              role="landlord"
+              pending={pending}
+              demo={data.demo}
+              onSwitch={changeRole}
+            />
           </div>
         </header>
         <div className="dash-content ll-content">

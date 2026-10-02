@@ -16,7 +16,6 @@ import {
   Building2,
   CalendarDays,
   Check,
-  ChevronDown,
   CircleHelp,
   Clock3,
   Handshake,
@@ -28,7 +27,6 @@ import {
   Search,
   Settings2,
   ShieldCheck,
-  SlidersHorizontal,
   Sparkles,
   Sun,
   TrendingUp,
@@ -41,6 +39,7 @@ import {
   Circle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { AccountMenu, WorkspaceSelector } from "@/components/dashboard/account-menu";
 import { PropertyImage } from "@/components/property-image";
 import { updateWorkspace } from "@/app/dashboard/actions";
 import { signOut } from "@/app/login/actions";
@@ -78,6 +77,12 @@ const sectionNames: Record<Section, string> = {
   calendar: "My calendar",
   settings: "Workspace settings",
 };
+const buyerSectionNames: Partial<Record<Section, string>> = {
+  deals: "My offers",
+  analytics: "Market insights",
+};
+const sectionLabel = (section: Section, role: WorkspaceRole) =>
+  (role === "buyer" && buyerSectionNames[section]) || sectionNames[section];
 const formatDate = (date: string) =>
   new Date(date).toLocaleDateString("en-US", {
     month: "short",
@@ -166,28 +171,28 @@ export function Dashboard({ initialData }: { initialData: DashboardData }) {
   );
   const firstName =
     data.name === "Your workspace" ? "there" : data.name.split(" ")[0];
-  const nav = [
-    { id: "overview" as Section, icon: LayoutDashboard, label: "Overview" },
-    ...(!isBuyer
-      ? [{ id: "listings" as Section, icon: Building2, label: "My properties" }]
-      : []),
-    {
-      id: "deals" as Section,
-      icon: Handshake,
-      label: "Deals & offers",
-      count: totals.openDeals,
-    },
-    ...(!isBuyer
-      ? [
-          {
-            id: "rentals" as Section,
-            icon: KeyRound,
-            label: "Rental management",
-          },
-        ]
-      : []),
-    { id: "analytics" as Section, icon: TrendingUp, label: "Analytics" },
-  ];
+  const nav = isBuyer
+    ? [
+        { id: "overview" as Section, icon: LayoutDashboard, label: "Overview" },
+        {
+          id: "deals" as Section,
+          icon: Handshake,
+          label: "My offers",
+          count: totals.openDeals,
+        },
+        { id: "analytics" as Section, icon: TrendingUp, label: "Market insights" },
+      ]
+    : [
+        { id: "overview" as Section, icon: LayoutDashboard, label: "Overview" },
+        { id: "listings" as Section, icon: Building2, label: "My listings" },
+        {
+          id: "deals" as Section,
+          icon: Handshake,
+          label: "Deals & offers",
+          count: totals.openDeals,
+        },
+        { id: "analytics" as Section, icon: TrendingUp, label: "Analytics" },
+      ];
   function navigate(next: Section) {
     setSection(next);
     setQuery("");
@@ -835,28 +840,11 @@ export function Dashboard({ initialData }: { initialData: DashboardData }) {
           </span>
           <span className="brand-caption">REAL ESTATE</span>
         </Link>
-        <div className="workspace-selector">
-          <span className="workspace-icon">
-            <Building2 size={21} />
-          </span>
-          <div>
-            <strong>My workspace</strong>
-            <label>
-              <span className="sr-only">Workspace role</span>
-              <select
-                aria-label="Workspace role"
-                value={data.role}
-                disabled={pending || !data.ready}
-                onChange={(e) => changeRole(e.target.value as WorkspaceRole)}
-              >
-                <option value="buyer">Buyer workspace</option>
-                <option value="seller">Seller workspace</option>
-                <option value="landlord">Landlord workspace</option>
-              </select>
-            </label>
-          </div>
-          <ChevronDown size={14} />
-        </div>
+        <WorkspaceSelector
+          role={data.role}
+          pending={pending}
+          onSwitch={changeRole}
+        />
         <p className="nav-caption">WORKSPACE</p>
         <nav>
           {nav.map((item) => (
@@ -918,26 +906,6 @@ export function Dashboard({ initialData }: { initialData: DashboardData }) {
               <ArrowUpRight size={13} />
             </button>
           </nav>
-          <div className="sidebar-profile">
-            <span className="dash-avatar">
-              {data.name
-                .split(" ")
-                .map((n) => n[0])
-                .slice(0, 2)
-                .join("")}
-            </span>
-            <div>
-              <strong>{data.name}</strong>
-              <span>{roleNames[data.role]} account</span>
-            </div>
-            <button
-              className="dash-icon"
-              aria-label="Account settings"
-              onClick={() => navigate("settings")}
-            >
-              <SlidersHorizontal size={15} />
-            </button>
-          </div>
         </div>
       </aside>
       <div className="dash-main">
@@ -952,9 +920,9 @@ export function Dashboard({ initialData }: { initialData: DashboardData }) {
             </button>
             <House size={15} />
             <span>/</span>
-            <span>Workspace</span>
+            <span>{roleNames[data.role]} workspace</span>
             <span>/</span>
-            <strong>{sectionNames[section]}</strong>
+            <strong>{sectionLabel(section, data.role)}</strong>
           </div>
           <div className="dash-top-actions">
             <Link href="/properties">
@@ -994,17 +962,15 @@ export function Dashboard({ initialData }: { initialData: DashboardData }) {
                 </div>
               )}
             </div>
-            <button
-              className="dash-avatar"
-              aria-label="Open account settings"
-              onClick={() => navigate("settings")}
-            >
-              {data.name
-                .split(" ")
-                .map((n) => n[0])
-                .slice(0, 2)
-                .join("")}
-            </button>
+            <AccountMenu
+              name={data.name}
+              email={data.email}
+              role={data.role}
+              pending={pending}
+              demo={data.demo}
+              onSwitch={changeRole}
+              onSettings={() => navigate("settings")}
+            />
           </div>
         </header>
         <div className="dash-content" aria-label={sectionNames[section]}>

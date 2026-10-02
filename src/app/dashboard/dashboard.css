@@ -79,15 +79,36 @@ body:has(.sol-dashboard) > .site-header {
   font-size: 11px;
   font-weight: 600;
 }
-.workspace-selector select {
+button.workspace-selector {
+  width: 100%;
+  text-align: left;
+  background: #fff;
+  cursor: pointer;
+}
+button.workspace-selector:hover,
+button.workspace-selector[data-popup-open] {
+  border-color: #c9d6f5;
+  background: #f8faff;
+}
+button.workspace-selector:focus-visible {
+  outline: 3px solid #a9c1ff;
+  outline-offset: 2px;
+}
+button.workspace-selector[data-popup-open] > svg {
+  transform: rotate(180deg);
+}
+.workspace-selector-copy {
+  flex: 1;
+  min-width: 0;
+}
+.workspace-selector-copy > span {
+  display: block;
   font-size: 10px;
   color: #737d8d;
-  min-height: 20px;
-  width: 100%;
-  outline: none;
-  appearance: none;
-  cursor: pointer;
-  background: white;
+  margin-top: 2px;
+}
+.workspace-menu {
+  width: 290px;
 }
 .workspace-selector > svg {
   color: #84909e;
@@ -2062,4 +2083,156 @@ body:has(.sol-dashboard) > .site-header {
   .dash-sidebar.is-open {
     visibility: visible;
   }
+}
+
+/* ---- Account menu (avatar): workspace switcher shared by all three dashboards ---- */
+.account-trigger {
+  cursor: pointer;
+  transition: box-shadow 0.18s;
+}
+.account-trigger:hover,
+.account-trigger[data-popup-open] {
+  box-shadow: 0 0 0 2px #0041d9;
+}
+.account-trigger:focus-visible {
+  outline: 3px solid #a9c1ff;
+  outline-offset: 2px;
+}
+.account-positioner {
+  z-index: 70;
+}
+.account-menu {
+  width: 312px;
+  max-width: calc(100vw - 24px);
+  padding: 14px;
+  border: 1px solid #e8ebf0;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 16px 40px #1821261f;
+  color: #202936;
+  font-size: 12px;
+  transform-origin: var(--transform-origin);
+  transition: opacity 0.15s, transform 0.15s;
+}
+.account-menu[data-starting-style],
+.account-menu[data-ending-style] {
+  opacity: 0;
+  transform: scale(0.97);
+}
+.account-menu-head {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 2px 4px 14px;
+  border-bottom: 1px solid #eef0f4;
+}
+.account-menu-head strong {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+}
+.account-menu-head span:not(.dash-avatar) {
+  display: block;
+  font-size: 11px;
+  color: #7c8493;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 220px;
+}
+.account-menu-caption {
+  margin: 12px 4px 6px;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: #98a0ad;
+}
+.account-menu-roles {
+  display: grid;
+  gap: 4px;
+}
+.account-menu-roles button {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 9px 10px;
+  border-radius: 10px;
+  text-align: left;
+  border: 1px solid transparent;
+}
+.account-menu-roles button:hover:not(:disabled) {
+  background: #f5f7fb;
+}
+.account-menu-roles button.is-current {
+  background: #edf2ff;
+  border-color: #d6e1ff;
+}
+.account-menu-roles button > svg {
+  color: #0041d9;
+  flex-shrink: 0;
+}
+.account-menu-roles button > span:nth-child(2) {
+  flex: 1;
+  min-width: 0;
+}
+.account-menu-roles strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+}
+.account-menu-roles small {
+  display: block;
+  font-size: 10px;
+  color: #7c8493;
+  margin-top: 2px;
+  line-height: 1.4;
+}
+.account-role-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  flex-shrink: 0;
+}
+.account-role-icon.role-buyer {
+  background: #fdeef1;
+  color: #c2405e;
+}
+.account-role-icon.role-seller {
+  background: #edf2ff;
+  color: #0041d9;
+}
+.account-role-icon.role-landlord {
+  background: #fff4e5;
+  color: #b7791f;
+}
+.account-menu-links {
+  display: grid;
+  gap: 2px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #eef0f4;
+}
+.account-menu-links a,
+.account-menu-links button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #4a5463;
+  text-align: left;
+}
+.account-menu-links a:hover,
+.account-menu-links button:hover {
+  background: #f5f7fb;
+  color: #0041d9;
+}
+.account-menu-links form {
+  margin: 0;
 }
