@@ -195,7 +195,8 @@ button.workspace-selector[data-popup-open] > svg {
   color: #7c8799;
   margin: 7px 0 12px;
 }
-.workspace-tip a {
+.workspace-tip a,
+.workspace-tip > button {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2235,4 +2236,12 @@ button.workspace-selector[data-popup-open] > svg {
 }
 .account-menu-links form {
   margin: 0;
+}
+
+.workspace-tip > button {
+  width: 100%;
+}
+.workspace-tip > button:hover:not(:disabled) {
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }

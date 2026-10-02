@@ -1655,19 +1655,6 @@
 }
 
 /* ---- Sidebar shell additions ---- */
-.ll-page .workspace-tip > button {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-  color: #0041d9;
-  font-size: 10px;
-  font-weight: 550;
-}
-.ll-page .workspace-tip > button:hover:not(:disabled) {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
 .ll-content > .dash-preview-banner {
   margin-bottom: 18px;
 }

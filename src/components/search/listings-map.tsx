@@ -257,12 +257,14 @@ function FitToResults({ points, bounds }: { points: MapPoint[]; bounds: Bounds |
     ? `b:${bounds.north},${bounds.south},${bounds.east},${bounds.west}`
     : `p:${points.length}:${points[0]?.id ?? ""}:${points.at(-1)?.id ?? ""}`;
   const lastSignature = useRef<string | null>(null);
+  // True while the view is our automatic framing (no user pan/zoom since).
+  const autoFramed = useRef(false);
 
   useEffect(() => {
     if (!map || !isLoaded) return;
 
-    const fit = () => {
-      if (lastSignature.current === signature) return;
+    const fit = (force = false) => {
+      if (!force && lastSignature.current === signature) return;
       const { clientWidth, clientHeight } = map.getContainer();
       // Hidden map (mobile list view): framing a 0×0 canvas is meaningless; wait for a resize.
       if (clientWidth < 50 || clientHeight < 50) return;
@@ -277,6 +279,7 @@ function FitToResults({ points, bounds }: { points: MapPoint[]; bounds: Bounds |
         return;
       }
       if (points.length === 0) return;
+      autoFramed.current = true;
       if (points.length === 1) {
         moveProgrammatically(map, () => map.jumpTo({ center: [points[0].longitude, points[0].latitude], zoom: 14 }));
         return;
@@ -289,14 +292,29 @@ function FitToResults({ points, bounds }: { points: MapPoint[]; bounds: Bounds |
       ];
       // Clear the overlays: the move toggle (top-left), zoom controls (bottom-right),
       // and on phones the floating Map/List button (bottom-centre).
-      const padding = { top: 90, bottom: clientWidth < 600 ? 100 : 70, left: 50, right: 70 };
+      // A tall sticky map can start partly below the fold; frame pins in the part
+      // that is actually on screen so none hide below the viewport.
+      const rect = map.getContainer().getBoundingClientRect();
+      const belowFold = Math.max(0, Math.min(rect.bottom - window.innerHeight, clientHeight - 260));
+      const padding = { top: 90, bottom: (clientWidth < 600 ? 100 : 70) + belowFold, left: 50, right: 70 };
       moveProgrammatically(map, () => map.fitBounds(box, { padding, maxZoom: 15, duration: 0 }));
     };
 
+    // Layout can settle after the first fit (panels, fonts, sticky containers):
+    // re-frame on resize until the user takes over the map.
+    // (MapLibre's resize() itself emits movestart, so takeover is detected from
+    // direct input events rather than movestart.)
+    const onResize = () => fit(autoFramed.current);
+    const takeOver = () => {
+      autoFramed.current = false;
+    };
+    const inputs = ["dragstart", "wheel", "touchstart", "dblclick", "boxzoomstart"] as const;
     fit();
-    map.on("resize", fit);
+    map.on("resize", onResize);
+    inputs.forEach((type) => map.on(type, takeOver));
     return () => {
-      map.off("resize", fit);
+      map.off("resize", onResize);
+      inputs.forEach((type) => map.off(type, takeOver));
     };
   }, [map, isLoaded, signature, bounds, points]);
 

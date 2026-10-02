@@ -3,6 +3,8 @@ import { Dashboard } from "@/components/dashboard/dashboard";
 import { demoDashboard } from "@/lib/dashboard/demo";
 import { LandlordDashboard } from "@/components/landlord/landlord-dashboard";
 import { landlordPreview } from "@/lib/landlord/demo";
+import { BuyerDashboard } from "@/components/buyer/buyer-dashboard";
+import { buyerPreview } from "@/lib/buyer/data";
 import { getMarketRentals, rentalFromMarketplace } from "@/lib/landlord/data";
 
 export const metadata: Metadata = {
@@ -19,9 +21,7 @@ export default async function DashboardPreview({
         initialData={landlordPreview(await rentalFromMarketplace(), await getMarketRentals())}
       />
     );
-  return (
-    <Dashboard
-      initialData={demoDashboard(role === "buyer" ? role : "seller")}
-    />
-  );
+  if (role === "buyer")
+    return <BuyerDashboard initialData={await buyerPreview()} />;
+  return <Dashboard initialData={demoDashboard("seller")} />;
 }

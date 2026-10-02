@@ -4,6 +4,8 @@ import { getDashboardData } from "@/lib/dashboard/data";
 import { Dashboard } from "@/components/dashboard/dashboard";
 import { LandlordDashboard } from "@/components/landlord/landlord-dashboard";
 import { getLandlordData } from "@/lib/landlord/data";
+import { BuyerDashboard } from "@/components/buyer/buyer-dashboard";
+import { getBuyerData } from "@/lib/buyer/data";
 
 export const metadata: Metadata = { title: "Your workspace" };
 export default async function DashboardPage() {
@@ -11,5 +13,7 @@ export default async function DashboardPage() {
   const data = await getDashboardData(user);
   if (data.role === "landlord")
     return <LandlordDashboard initialData={await getLandlordData(user)} />;
+  if (data.role === "buyer")
+    return <BuyerDashboard initialData={await getBuyerData(user, data)} />;
   return <Dashboard initialData={data} />;
 }
