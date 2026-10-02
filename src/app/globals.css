@@ -546,3 +546,21 @@ input, select { min-height: 44px; }
 .cluster-pin { display: grid; place-items: center; min-width: 38px; height: 38px; padding: 0 8px; border-radius: 999px; background: var(--primary); color: #fff; font-size: 13px; font-weight: 700; border: 3px solid #fff; box-shadow: 0 0 0 4px color-mix(in oklab, var(--primary) 25%, transparent), 0 2px 6px #0004; outline: none; transition: transform .12s; }
 .cluster-pin:hover { transform: scale(1.08); }
 .cluster-pin:focus-visible { box-shadow: 0 0 0 3px var(--ring); }
+
+/* Sign-up: Buyer / Seller / Landlord radio cards */
+.role-picker { display: grid; gap: 8px; margin-bottom: 20px; }
+.role-picker legend { margin-bottom: 8px; }
+.role-option-card { position: relative; display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 12px; background: var(--card); cursor: pointer; transition: border-color .15s, background .15s, box-shadow .15s; }
+.role-option-card:hover { border-color: #b9c8ef; }
+.role-option-card:has(input:checked) { border-color: var(--primary); background: #f3f6ff; box-shadow: 0 0 0 1px var(--primary); }
+.role-option-card:has(input:focus-visible) { outline: 3px solid #a9c1ff; outline-offset: 2px; }
+.role-option-card input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.role-option-card::after { content: ""; width: 18px; height: 18px; margin-left: auto; flex-shrink: 0; border-radius: 50%; border: 1.5px solid #c3c9d2; background: #fff; }
+.role-option-card:has(input:checked)::after { border: 5px solid var(--primary); }
+.role-option-icon { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0; }
+.role-option-icon.role-buyer { background: #fdeef1; color: #c2405e; }
+.role-option-icon.role-seller { background: #edf2ff; color: #0041d9; }
+.role-option-icon.role-landlord { background: #fff4e5; color: #b7791f; }
+.role-option-text { min-width: 0; }
+.role-option-text strong { display: block; font-size: 14px; font-weight: 600; }
+.role-option-text small { display: block; margin-top: 2px; font-size: 12px; line-height: 1.4; color: var(--muted-foreground); }

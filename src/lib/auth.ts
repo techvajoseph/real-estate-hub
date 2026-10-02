@@ -2,6 +2,8 @@ import "server-only";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
+export const SIGNUP_ROLES = ["buyer", "seller", "landlord"] as const;
+
 export async function getCurrentUser() {
   const supabase = await createClient();
   const {
@@ -15,11 +17,14 @@ export async function getCurrentUser() {
     .eq("id", user.id)
     .single();
 
+  const chosen = user.user_metadata?.workspace_role;
   return {
     id: user.id,
     email: user.email ?? "",
     fullName: profile?.full_name ?? null,
     role: (profile?.role ?? "member") as "member" | "agent" | "admin",
+    /** Workspace chosen on the sign-up form (Buyer / Seller / Landlord), if any. */
+    signupRole: SIGNUP_ROLES.includes(chosen) ? (chosen as (typeof SIGNUP_ROLES)[number]) : null,
   };
 }
 

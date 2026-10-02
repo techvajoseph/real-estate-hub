@@ -84,12 +84,18 @@ export async function getDashboardData(
         ]
       : [];
   });
+  let role = workspace.data?.role as WorkspaceRole | undefined;
+  if (!role && !workspace.error && user.signupRole) {
+    const { error } = await db
+      .from("workspaces")
+      .upsert({ user_id: user.id, role: user.signupRole });
+    if (!error) role = user.signupRole;
+  }
   return {
     asOf: new Date().toISOString(),
     name: user.fullName || "Your workspace",
     email: user.email,
-    role: (workspace.data?.role ||
-      (user.role === "member" ? "buyer" : "seller")) as WorkspaceRole,
+    role: (role || (user.role === "member" ? "buyer" : "seller")) as WorkspaceRole,
     demo: false,
     ready,
     listings: listings.data ?? [],

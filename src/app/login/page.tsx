@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { Sun, ArrowLeft } from "lucide-react";
+import { Sun, ArrowLeft, Building2, Heart, KeyRound } from "lucide-react";
 import { signIn, signUp } from "./actions";
 
 export const metadata: Metadata = { title: "Sign in" };
+
+const ROLE_OPTIONS = [
+  { value: "buyer", title: "Buy a home", description: "Save homes, plan viewings, track offers", icon: Heart },
+  { value: "seller", title: "Sell a property", description: "List your property and manage offers", icon: Building2 },
+  { value: "landlord", title: "Rent out a property", description: "Manage rentals, tenants, and rent", icon: KeyRound },
+] as const;
 
 export default async function LoginPage({ searchParams }: PageProps<"/login">) {
   const params = await searchParams;
@@ -22,13 +28,30 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
       <h1 className="mb-3 text-3xl font-semibold tracking-tight">
         {isSignup ? "Make yourself at home." : "Welcome home."}
       </h1>
-      <p className="mb-8 text-sm leading-relaxed text-muted-foreground">{isSignup ? "Create an account to save your favorite homes and searches." : "Sign in to pick up where you left off."}</p>
+      <p className="mb-8 text-sm leading-relaxed text-muted-foreground">{isSignup ? "Tell us how you'll use SOL and we'll set up the right workspace for you." : "Sign in to pick up where you left off."}</p>
 
       {error && <p className="mb-4 rounded-md bg-red-500/10 p-3 text-sm text-red-600">{error}</p>}
       {message && <p className="mb-4 rounded-md bg-primary/10 p-3 text-sm text-primary">{message}</p>}
 
       <form action={isSignup ? signUp : signIn} className="space-y-4">
         <input type="hidden" name="next" value={get("next") ?? ""} />
+        {isSignup && (
+          <fieldset className="role-picker">
+            <legend className="label">I&apos;m here to</legend>
+            {ROLE_OPTIONS.map((r) => (
+              <label key={r.value} className="role-option-card">
+                <input type="radio" name="role" value={r.value} required defaultChecked={get("role") === r.value} />
+                <span className={`role-option-icon role-${r.value}`}>
+                  <r.icon size={18} />
+                </span>
+                <span className="role-option-text">
+                  <strong>{r.title}</strong>
+                  <small>{r.description}</small>
+                </span>
+              </label>
+            ))}
+          </fieldset>
+        )}
         {isSignup && (
           <div>
             <label className="label" htmlFor="fullName">Full name</label>

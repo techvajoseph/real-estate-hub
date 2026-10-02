@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { SIGNUP_ROLES } from "@/lib/auth";
 
 const credentialsSchema = z.object({
   email: z.string().email(),
@@ -52,22 +53,37 @@ export async function signIn(formData: FormData) {
 
 export async function signUp(formData: FormData) {
   const parsed = credentialsSchema
-    .extend({ fullName: z.string().trim().min(1, "Name is required") })
+    .extend({
+      fullName: z.string().trim().min(1, "Name is required"),
+      role: z.enum(SIGNUP_ROLES, { error: "Choose whether you're a buyer, seller, or landlord." }),
+    })
     .safeParse(Object.fromEntries(formData));
-  if (!parsed.success) loginRedirect({ error: parsed.error.issues[0].message, mode: "signup" });
+  if (!parsed.success) {
+    const role = formData.get("role");
+    loginRedirect({
+      error: parsed.error.issues[0].message,
+      mode: "signup",
+      ...(typeof role === "string" && role ? { role } : {}),
+    });
+  }
 
   const origin = (await headers()).get("origin") ?? "";
   const supabase = await createClient();
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email: parsed.data.email,
     password: parsed.data.password,
     options: {
-      data: { full_name: parsed.data.fullName },
+      data: { full_name: parsed.data.fullName, workspace_role: parsed.data.role },
       emailRedirectTo: `${origin}/auth/confirm`,
     },
   });
-  if (error) loginRedirect({ error: authErrorMessage(error), mode: "signup" });
+  if (error) loginRedirect({ error: authErrorMessage(error), mode: "signup", role: parsed.data.role });
 
+  // Email confirmation off: already signed in, so set up the workspace and go straight in.
+  if (data.session) {
+    await supabase.from("workspaces").upsert({ user_id: data.session.user.id, role: parsed.data.role });
+    redirect("/dashboard");
+  }
   loginRedirect({ message: "Check your email to confirm your account." });
 }
 
