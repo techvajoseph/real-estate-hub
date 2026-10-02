@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { SIGNUP_ROLES } from "@/lib/auth";
+import { publicEnv } from "@/lib/env";
 
 const credentialsSchema = z.object({
   email: z.string().email(),
@@ -91,4 +92,72 @@ export async function signOut() {
   const supabase = await createClient();
   await supabase.auth.signOut();
   redirect("/");
+}
+
+/** Absolute origin of this request (works locally, on Vercel, and behind proxies). */
+async function requestOrigin() {
+  const h = await headers();
+  const origin = h.get("origin");
+  if (origin) return origin;
+  const host = h.get("x-forwarded-host") ?? h.get("host");
+  const proto = h.get("x-forwarded-proto") ?? (host?.startsWith("localhost") ? "http" : "https");
+  return `${proto}://${host}`;
+}
+
+/**
+ * signInWithOAuth only builds a URL, so a disabled provider would otherwise show
+ * Supabase's raw JSON error page. Ask Supabase's public settings first (cached 60s).
+ */
+async function googleEnabled() {
+  try {
+    const res = await fetch(`${publicEnv.NEXT_PUBLIC_SUPABASE_URL}/auth/v1/settings`, {
+      headers: { apikey: publicEnv.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY },
+      next: { revalidate: 60 },
+    });
+    const settings = (await res.json()) as { external?: { google?: boolean } };
+    return settings.external?.google === true;
+  } catch {
+    return true; // Settings unreachable: let Supabase report any real problem.
+  }
+}
+
+/**
+ * "Continue with Google": sends the browser to Google via Supabase.
+ * On sign-up the chosen workspace rides along so /auth/callback can set it up.
+ */
+export async function signInWithGoogle(formData: FormData) {
+  const mode = formData.get("mode") === "signup" ? "signup" : "signin";
+  const next = safeNext(String(formData.get("next") ?? "") || undefined);
+  const role = z.enum(SIGNUP_ROLES).safeParse(formData.get("role"));
+  if (mode === "signup" && !role.success) {
+    loginRedirect({ error: "Choose whether you're a buyer, seller, or landlord first.", mode: "signup" });
+  }
+
+  if (!(await googleEnabled())) {
+    loginRedirect({
+      error: "Google sign-in isn't switched on yet. Please use email for now.",
+      ...(mode === "signup" ? { mode } : {}),
+    });
+  }
+
+  const callback = new URL("/auth/callback", await requestOrigin());
+  callback.searchParams.set("next", next);
+  if (role.success) callback.searchParams.set("role", role.data);
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: callback.toString(),
+      // Always show the account chooser, so people with several Google accounts can pick.
+      queryParams: { prompt: "select_account" },
+    },
+  });
+  if (error || !data.url) {
+    loginRedirect({
+      error: "We couldn't reach Google. Please try again.",
+      ...(mode === "signup" ? { mode } : {}),
+    });
+  }
+  redirect(data.url);
 }

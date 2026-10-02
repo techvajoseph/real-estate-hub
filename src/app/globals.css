@@ -564,3 +564,10 @@ input, select { min-height: 44px; }
 .role-option-text { min-width: 0; }
 .role-option-text strong { display: block; font-size: 14px; font-weight: 600; }
 .role-option-text small { display: block; margin-top: 2px; font-size: 12px; line-height: 1.4; color: var(--muted-foreground); }
+
+/* "Continue with Google" + divider */
+.google-button { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; min-height: 48px; border: 1px solid #d5dae1; border-radius: 10px; background: #fff; color: #1f1f1f; font-size: 14px; font-weight: 550; transition: background .15s, border-color .15s, box-shadow .15s; }
+.google-button:hover { background: #f8f9fb; border-color: #b9c1cc; }
+.google-button:focus-visible { outline: 3px solid #a9c1ff; outline-offset: 2px; }
+.auth-divider { display: flex; align-items: center; gap: 12px; color: var(--muted-foreground); font-size: 12px; }
+.auth-divider::before, .auth-divider::after { content: ""; flex: 1; height: 1px; background: var(--border); }
