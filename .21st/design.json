@@ -1,0 +1,376 @@
+{
+  "version": 1,
+  "project": {
+    "name": "real-estate-sol",
+    "productType": null,
+    "stack": [
+      "nextjs",
+      "react",
+      "shadcn",
+      "tailwind-v4"
+    ]
+  },
+  "sources": {
+    "tokens": [
+      "src/app/globals.css"
+    ],
+    "components": [
+      "src/components/ui"
+    ],
+    "assets": [
+      "public/images"
+    ],
+    "instructions": [
+      "AGENTS.md",
+      "CLAUDE.md"
+    ]
+  },
+  "design": {
+    "colorMode": "light-and-dark",
+    "colors": {
+      "--background": {
+        "value": "#ffffff",
+        "source": "src/app/globals.css"
+      },
+      "--foreground": {
+        "value": "#182126",
+        "source": "src/app/globals.css"
+      },
+      "--card-foreground": {
+        "value": "#182126",
+        "source": "src/app/globals.css"
+      },
+      "--popover-foreground": {
+        "value": "#182126",
+        "source": "src/app/globals.css"
+      },
+      "--primary": {
+        "value": "#0041d9",
+        "source": "src/app/globals.css"
+      },
+      "--primary-foreground": {
+        "value": "#ffffff",
+        "source": "src/app/globals.css"
+      },
+      "--secondary": {
+        "value": "#f5f6f7",
+        "source": "src/app/globals.css"
+      },
+      "--secondary-foreground": {
+        "value": "#182126",
+        "source": "src/app/globals.css"
+      },
+      "--muted": {
+        "value": "#f5f6f7",
+        "source": "src/app/globals.css"
+      },
+      "--muted-foreground": {
+        "value": "#697078",
+        "source": "src/app/globals.css"
+      },
+      "--accent": {
+        "value": "#edf2ff",
+        "source": "src/app/globals.css"
+      },
+      "--accent-foreground": {
+        "value": "#0041d9",
+        "source": "src/app/globals.css"
+      },
+      "--destructive": {
+        "value": "#c03131",
+        "source": "src/app/globals.css"
+      },
+      "--border": {
+        "value": "#e5e7eb",
+        "source": "src/app/globals.css"
+      },
+      "--ring": {
+        "value": "#3367e1",
+        "source": "src/app/globals.css"
+      },
+      "--chart-1": {
+        "value": "#0041d9",
+        "source": "src/app/globals.css"
+      },
+      "--chart-2": {
+        "value": "#3367e1",
+        "source": "src/app/globals.css"
+      },
+      "--chart-3": {
+        "value": "#182126",
+        "source": "src/app/globals.css"
+      },
+      "--chart-4": {
+        "value": "#8e9bb8",
+        "source": "src/app/globals.css"
+      },
+      "--chart-5": {
+        "value": "#dce6ff",
+        "source": "src/app/globals.css"
+      },
+      "--sidebar-foreground": {
+        "value": "#182126",
+        "source": "src/app/globals.css"
+      },
+      "--sidebar-primary": {
+        "value": "#0041d9",
+        "source": "src/app/globals.css"
+      },
+      "--sidebar-primary-foreground": {
+        "value": "#ffffff",
+        "source": "src/app/globals.css"
+      },
+      "--sidebar-accent": {
+        "value": "#edf2ff",
+        "source": "src/app/globals.css"
+      },
+      "--sidebar-accent-foreground": {
+        "value": "#0041d9",
+        "source": "src/app/globals.css"
+      },
+      "--sidebar-border": {
+        "value": "#e5e7eb",
+        "source": "src/app/globals.css"
+      },
+      "--sidebar-ring": {
+        "value": "#3367e1",
+        "source": "src/app/globals.css"
+      },
+      "--color-background": {
+        "value": "var(--background)",
+        "source": "src/app/globals.css"
+      },
+      "--color-foreground": {
+        "value": "var(--foreground)",
+        "source": "src/app/globals.css"
+      },
+      "--color-card": {
+        "value": "var(--card)",
+        "source": "src/app/globals.css"
+      },
+      "--color-card-foreground": {
+        "value": "var(--card-foreground)",
+        "source": "src/app/globals.css"
+      },
+      "--color-popover": {
+        "value": "var(--popover)",
+        "source": "src/app/globals.css"
+      },
+      "--color-popover-foreground": {
+        "value": "var(--popover-foreground)",
+        "source": "src/app/globals.css"
+      },
+      "--color-primary": {
+        "value": "var(--primary)",
+        "source": "src/app/globals.css"
+      },
+      "--color-primary-foreground": {
+        "value": "var(--primary-foreground)",
+        "source": "src/app/globals.css"
+      },
+      "--color-secondary": {
+        "value": "var(--secondary)",
+        "source": "src/app/globals.css"
+      },
+      "--color-secondary-foreground": {
+        "value": "var(--secondary-foreground)",
+        "source": "src/app/globals.css"
+      },
+      "--color-muted": {
+        "value": "var(--muted)",
+        "source": "src/app/globals.css"
+      },
+      "--color-muted-foreground": {
+        "value": "var(--muted-foreground)",
+        "source": "src/app/globals.css"
+      },
+      "--color-accent": {
+        "value": "var(--accent)",
+        "source": "src/app/globals.css"
+      },
+      "--color-accent-foreground": {
+        "value": "var(--accent-foreground)",
+        "source": "src/app/globals.css"
+      },
+      "--color-destructive": {
+        "value": "var(--destructive)",
+        "source": "src/app/globals.css"
+      },
+      "--color-border": {
+        "value": "var(--border)",
+        "source": "src/app/globals.css"
+      },
+      "--color-input": {
+        "value": "var(--input)",
+        "source": "src/app/globals.css"
+      },
+      "--color-ring": {
+        "value": "var(--ring)",
+        "source": "src/app/globals.css"
+      },
+      "--color-chart-1": {
+        "value": "var(--chart-1)",
+        "source": "src/app/globals.css"
+      },
+      "--color-chart-2": {
+        "value": "var(--chart-2)",
+        "source": "src/app/globals.css"
+      },
+      "--color-chart-3": {
+        "value": "var(--chart-3)",
+        "source": "src/app/globals.css"
+      },
+      "--color-chart-4": {
+        "value": "var(--chart-4)",
+        "source": "src/app/globals.css"
+      },
+      "--color-chart-5": {
+        "value": "var(--chart-5)",
+        "source": "src/app/globals.css"
+      },
+      "--color-sidebar": {
+        "value": "var(--sidebar)",
+        "source": "src/app/globals.css"
+      },
+      "--color-sidebar-foreground": {
+        "value": "var(--sidebar-foreground)",
+        "source": "src/app/globals.css"
+      },
+      "--color-sidebar-primary": {
+        "value": "var(--sidebar-primary)",
+        "source": "src/app/globals.css"
+      },
+      "--color-sidebar-primary-foreground": {
+        "value": "var(--sidebar-primary-foreground)",
+        "source": "src/app/globals.css"
+      },
+      "--color-sidebar-accent": {
+        "value": "var(--sidebar-accent)",
+        "source": "src/app/globals.css"
+      },
+      "--color-sidebar-accent-foreground": {
+        "value": "var(--sidebar-accent-foreground)",
+        "source": "src/app/globals.css"
+      },
+      "--color-sidebar-border": {
+        "value": "var(--sidebar-border)",
+        "source": "src/app/globals.css"
+      },
+      "--color-sidebar-ring": {
+        "value": "var(--sidebar-ring)",
+        "source": "src/app/globals.css"
+      }
+    },
+    "typography": {
+      "--font-sans": {
+        "value": "var(--font-geist-sans)",
+        "source": "src/app/globals.css"
+      },
+      "--font-mono": {
+        "value": "var(--font-geist-mono)",
+        "source": "src/app/globals.css"
+      },
+      "--font-heading": {
+        "value": "var(--font-geist-sans)",
+        "source": "src/app/globals.css"
+      }
+    },
+    "spacing": {},
+    "radius": {
+      "--radius": {
+        "value": "0.75rem",
+        "source": "src/app/globals.css"
+      },
+      "--radius-sm": {
+        "value": "calc(var(--radius) * 0.6)",
+        "source": "src/app/globals.css"
+      },
+      "--radius-md": {
+        "value": "calc(var(--radius) * 0.8)",
+        "source": "src/app/globals.css"
+      },
+      "--radius-lg": {
+        "value": "var(--radius)",
+        "source": "src/app/globals.css"
+      },
+      "--radius-xl": {
+        "value": "calc(var(--radius) * 1.4)",
+        "source": "src/app/globals.css"
+      },
+      "--radius-2xl": {
+        "value": "calc(var(--radius) * 1.8)",
+        "source": "src/app/globals.css"
+      },
+      "--radius-3xl": {
+        "value": "calc(var(--radius) * 2.2)",
+        "source": "src/app/globals.css"
+      },
+      "--radius-4xl": {
+        "value": "calc(var(--radius) * 2.6)",
+        "source": "src/app/globals.css"
+      }
+    },
+    "shadows": {},
+    "motion": {},
+    "density": "unknown"
+  },
+  "components": {
+    "installed": [
+      "button"
+    ],
+    "preferredPrimitives": [],
+    "patterns": []
+  },
+  "constraints": {
+    "must": [],
+    "avoid": []
+  },
+  "decisions": [
+    "SOL uses original sun branding, white editorial surfaces, cobalt #0041D9 actions, charcoal text, architectural photography, 12px buttons and 20px cards. User requested a premium original property experience inspired by the provided reference.",
+    "Reuse existing shadcn Button and Base UI Tabs. Tab composition informed by https://21st.dev/originui/tabs; authenticated 21st CLI retrieval was unavailable.",
+    "Render real Supabase listing data and preserve search, authentication, favorites, and import workflows. Never substitute editorial photography for listing photos.",
+    "Buy page (/properties, 2026-10-02): Zillow-style split search with SOL tokens. Full-height mapcn/MapLibre map (CARTO Positron light) on the left, 2-column listing grid on the right, pill filter bar built on Base UI Popover, cobalt price pins at stored provider coordinates with supercluster count bubbles when zoomed out, search-as-I-move-the-map on by default; mobile uses a floating Map/List toggle. Map component from 21st search result mapcn MarkerContent, installed from mapcn.dev/r/map.json.",
+    "Role-aware dashboard: white sidebar, cool neutral canvas, cobalt controls, grouped activity chart, portfolio donut, and property table. Buyer, Seller, and Landlord views use owner-scoped Supabase data with a clearly labeled public sample preview. Inspired by the requested 21st dashboard collection; existing shadcn primitives reused.",
+    "Landlord redesign 2026-10-02: user-selected mint reference supersedes the shared shell for Landlord only. Horizontal navigation, pale mint canvas, rounded white shell, emerald gradient KPI band, real rental hero beside pale mint rental-income bars, then tenant/reminder/calendar panels. Existing Button and Lucide primitives reused with public 21st dashboard inspiration. Private owner CRUD and ledger data; sample preview clearly labeled.",
+    "Landlord dashboard (2026-10-02): uses the shared buyer/seller shell (dash-sidebar + breadcrumb topbar, cobalt tokens) instead of its former mint top-nav frame. Sidebar: RENTAL PORTFOLIO (Overview, My rentals, Tenants, Transactions, Calendar, Analytics) and MARKETPLACE (Rental listings = marketplace for-rent homes with Add to my rentals import, Browse all rentals). KPI cards are white with tinted icon chips, matching the seller KPI row."
+  ],
+  "evidence": [
+    {
+      "fact": "components.installed",
+      "source": "src/components/ui"
+    },
+    {
+      "fact": "design.colorMode:light-and-dark",
+      "source": "src/app/globals.css"
+    },
+    {
+      "fact": "design.tokens",
+      "source": "src/app/globals.css"
+    },
+    {
+      "fact": "project.instructions",
+      "source": "AGENTS.md"
+    },
+    {
+      "fact": "project.instructions",
+      "source": "CLAUDE.md"
+    },
+    {
+      "fact": "project.stack:nextjs",
+      "source": "package.json"
+    },
+    {
+      "fact": "project.stack:react",
+      "source": "package.json"
+    },
+    {
+      "fact": "project.stack:shadcn",
+      "source": "components.json"
+    },
+    {
+      "fact": "project.stack:tailwind-v4",
+      "source": "package.json"
+    }
+  ],
+  "generatedAt": "2026-10-02T04:13:23.483Z"
+}
